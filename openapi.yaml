@@ -1,0 +1,84 @@
+openapi: 3.0.0
+info:
+  title: 'Tournoi des nations'
+  version: '0.0'
+servers:
+  -
+    url: 'http://localhost'
+    description: 'Local development environment'
+  -
+    url: 'https://tournoi-des-nations.ovh'
+    description: 'Production environment'
+paths:
+  /token:
+    post:
+      tags:
+        - Auth
+      summary: 'Get JWT'
+      operationId: 1257bfc641524ba028f12ef93b891eb5
+      requestBody:
+        $ref: '#/components/requestBodies/TokenRequest'
+      responses:
+        '200':
+          description: 'The requested token'
+          content:
+            application/json:
+              schema:
+                properties:
+                  token: { description: 'A JWT to use for authentication', type: string }
+                type: object
+        '401':
+          description: 'Invalid credentials'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    TokenCreateInput:
+      required:
+        - email
+        - password
+        - device_name
+      properties:
+        email:
+          description: 'The email of the user'
+          type: string
+          format: email
+          nullable: false
+        password:
+          description: 'The plain password of the user'
+          type: string
+          example: secret
+          nullable: false
+        device_name:
+          description: 'A descriptive name of the device linked to the token'
+          type: string
+          example: Laptop
+          nullable: false
+      type: object
+    Error:
+      required:
+        - message
+      properties:
+        message:
+          description: 'A message describing the error'
+          type: string
+          nullable: false
+        errors:
+          description: 'A list of validation errors'
+          type: object
+          nullable: false
+      type: object
+  requestBodies:
+    TokenRequest:
+      description: 'Request body for creating a JWT token'
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TokenCreateInput'
+tags:
+  -
+    name: Auth
+    description: Auth
