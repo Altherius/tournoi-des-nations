@@ -13,13 +13,13 @@ class GameController extends Controller
     #[OA\Response(response: '200', description: 'A paginated collection of games', content: new OA\JsonContent(ref: '#/components/schemas/GamePaginatedCollection'))]
     public function index()
     {
-        return GameResource::collection(Game::paginate());
+        return GameResource::collection(Game::with(['hostingTeam', 'receivingTeam'])->paginate());
     }
 
     #[OA\Post(path: '/api/games', summary: 'Create game', tags: ['Game'])]
     #[OA\RequestBody(ref: '#/components/requestBodies/GameCreateRequest')]
     #[OA\Response(response: '201', description: 'The created game', content: new OA\JsonContent(properties: [
-        new OA\Property(property: 'data', ref: '#/components/schemas/Game', type: 'object'),
+        new OA\Property(property: 'data', ref: '#/components/schemas/Team', type: 'object'),
     ]))]
     #[OA\Response(response: '400', description: 'Input format is incorrect', content: new OA\JsonContent(ref: '#/components/schemas/Error'))]
     #[OA\Response(response: '422', description: 'Input data has not been validated', content: new OA\JsonContent(ref: '#/components/schemas/Error'))]
