@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\GameCreated;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -19,4 +20,8 @@ class Game extends Model
     {
         return $this->belongsTo(Team::class, 'receiving_team_id');
     }
+
+    protected $dispatchesEvents = [
+        'created' => GameCreated::class,
+    ];
 }

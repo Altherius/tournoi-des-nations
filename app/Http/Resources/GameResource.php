@@ -29,8 +29,8 @@ class GameResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->hostingTeam->name.' - '.$this->receivingTeam->name,
-            'hostingTeamId' => $this->hosting_team_id,
-            'receivingTeamId' => $this->receiving_team_id,
+            'hostingTeam' => new TeamResource($this->hostingTeam),
+            'receivingTeam' => new TeamResource($this->receivingTeam),
             'gameScoreTotal' => ($this->host_score_1 + $this->host_score_2).' - '.($this->guest_score_1 + $this->guest_score_2),
             'gameScoreFirst' => $this->host_score_1.' - '.$this->guest_score_1,
             'gameScoreSecond' => $this->host_score_2.' - '.$this->guest_score_2,
