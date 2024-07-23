@@ -26,7 +26,7 @@ class TeamController extends Controller
     #[OA\Response(response: '422', description: 'Input data has not been validated', content: new OA\JsonContent(ref: '#/components/schemas/Error'))]
     public function store(TeamCreateRequest $request)
     {
-        $team = new Team();
+        $team = new Team;
 
         $team->name = $request->name;
         $team->country_code = $request->countryCode;

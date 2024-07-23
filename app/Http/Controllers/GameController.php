@@ -25,7 +25,7 @@ class GameController extends Controller
     #[OA\Response(response: '422', description: 'Input data has not been validated', content: new OA\JsonContent(ref: '#/components/schemas/Error'))]
     public function store(GameCreateRequest $request)
     {
-        $game = new Game();
+        $game = new Game;
 
         $game->hosting_team_id = $request->hostingTeamId;
         $game->receiving_team_id = $request->receivingTeamId;

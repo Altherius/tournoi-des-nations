@@ -20,7 +20,7 @@ class UpdateEloRatings
      */
     public function handle(GameCreated $event): void
     {
-        $eloCalculator = new EloCalculator();
+        $eloCalculator = new EloCalculator;
         $subjectRating = $event->game->hostingTeam->rating;
         $opponentRating = $event->game->receivingTeam->rating;
         $goalsDiff = ($event->game->host_score_1 + $event->game->host_score_2) - ($event->game->guest_score_1 + $event->game->guest_score_2);
