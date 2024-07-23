@@ -8,5 +8,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::apiResource('/games', GameController::class)->only(['index', 'store', 'show']);
 Route::apiResource('/teams', TeamController::class)->except('destroy');
+Route::get('/teams/{team}/games', [TeamController::class, 'games']);
 Route::post('/token', [ApiTokenController::class, 'token']);
 Route::apiResource('/tournaments', TournamentController::class)->except('destroy');
+Route::get('/tournaments/{tournament}/games', [TournamentController::class, 'games']);

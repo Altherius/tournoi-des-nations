@@ -209,6 +209,33 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  '/api/teams/{id}/games':
+    get:
+      tags:
+        - Game
+      summary: 'Get games linked to a team'
+      operationId: 325c991fa7a42ed8adf0452168455a33
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'The ID of the team'
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'A paginated collection of games'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GamePaginatedCollection'
+        '404':
+          description: 'No team has been found with this ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /api/tournaments:
     get:
       tags:
@@ -311,6 +338,33 @@ paths:
                 $ref: '#/components/schemas/Error'
         '422':
           description: 'Input data has not been validated'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/api/tournaments/{id}/games':
+    get:
+      tags:
+        - Game
+      summary: 'Get games linked to a tournament'
+      operationId: 0a0384e5143f88bfce322ce68aefbc65
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'The ID of the tournament'
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'A paginated collection of games'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GamePaginatedCollection'
+        '404':
+          description: 'No tournament has been found with this ID'
           content:
             application/json:
               schema:

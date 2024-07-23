@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Tournament\TournamentCreateRequest;
 use App\Http\Requests\Tournament\TournamentUpdateRequest;
+use App\Http\Resources\GameResource;
 use App\Http\Resources\TournamentResource;
+use App\Models\Game;
 use App\Models\Tournament;
 use OpenApi\Attributes as OA;
 
@@ -48,6 +50,17 @@ class TournamentController extends Controller
         $tournament->load('bronzeTeam');
 
         return new TournamentResource($tournament);
+    }
+
+    #[OA\Get(path: '/api/tournaments/{id}/games', summary: 'Get games linked to a tournament', tags: ['Game'])]
+    #[OA\Parameter(name: 'id', description: 'The ID of the tournament', in: 'path', required: true, schema: new OA\Schema(type: 'integer'))]
+    #[OA\Response(response: '200', description: 'A paginated collection of games', content: new OA\JsonContent(ref: '#/components/schemas/GamePaginatedCollection'))]
+    #[OA\Response(response: '404', description: 'No tournament has been found with this ID', content: new OA\JsonContent(ref: '#/components/schemas/Error'))]
+    public function games(Tournament $tournament)
+    {
+        $games = Game::where('tournament_id', $tournament->id)->paginate();
+
+        return GameResource::collection($games);
     }
 
     #[OA\Put(path: '/api/tournaments/{id}', summary: 'Update tournament', tags: ['Tournament'])]

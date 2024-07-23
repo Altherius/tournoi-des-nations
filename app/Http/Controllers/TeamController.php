@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Team\TeamCreateRequest;
 use App\Http\Requests\Team\TeamUpdateRequest;
+use App\Http\Resources\GameResource;
 use App\Http\Resources\TeamResource;
+use App\Models\Game;
 use App\Models\Team;
 use OpenApi\Attributes as OA;
 
@@ -47,6 +49,17 @@ class TeamController extends Controller
     public function show(Team $team)
     {
         return new TeamResource($team);
+    }
+
+    #[OA\Get(path: '/api/teams/{id}/games', summary: 'Get games linked to a team', tags: ['Game'])]
+    #[OA\Parameter(name: 'id', description: 'The ID of the team', in: 'path', required: true, schema: new OA\Schema(type: 'integer'))]
+    #[OA\Response(response: '200', description: 'A paginated collection of games', content: new OA\JsonContent(ref: '#/components/schemas/GamePaginatedCollection'))]
+    #[OA\Response(response: '404', description: 'No team has been found with this ID', content: new OA\JsonContent(ref: '#/components/schemas/Error'))]
+    public function games(Team $team)
+    {
+        $games = Game::where('hosting_team_id', $team->id)->orWhere('receiving_team_id', $team->id)->paginate();
+
+        return GameResource::collection($games);
     }
 
     #[OA\Put(path: '/api/teams/{id}', summary: 'Update team', tags: ['Team'])]
