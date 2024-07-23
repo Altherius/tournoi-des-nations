@@ -1,11 +1,10 @@
 <?php
 
 use App\Http\Controllers\ApiTokenController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\GameController;
+use App\Http\Controllers\TeamController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/me', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
-
 Route::post('/token', [ApiTokenController::class, 'token']);
+Route::apiResource('/teams', TeamController::class)->except('destroy');
+Route::apiResource('/games', GameController::class)->only(['index', 'store', 'show']);
