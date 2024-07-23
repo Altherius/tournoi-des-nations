@@ -209,6 +209,112 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /api/tournaments:
+    get:
+      tags:
+        - Tournament
+      summary: 'Get collection of tournaments'
+      operationId: 8626d4f0c19b7c5d27dce357833b6b97
+      responses:
+        '200':
+          description: 'A paginated collection of tournaments'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TournamentPaginatedCollection'
+    post:
+      tags:
+        - Tournament
+      summary: 'Create tournament'
+      operationId: d6053f0972883878f37e936e0316a92d
+      requestBody:
+        $ref: '#/components/requestBodies/TournamentCreateRequest'
+      responses:
+        '201':
+          description: 'The created tournament'
+          content:
+            application/json:
+              schema:
+                properties:
+                  data: { $ref: '#/components/schemas/Tournament' }
+                type: object
+        '400':
+          description: 'Input format is incorrect'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: 'Input data has not been validated'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/api/tournaments/{id}':
+    get:
+      tags:
+        - Tournament
+      summary: 'Get tournament'
+      operationId: 6fc0b01dfb2e637254d85be733c11867
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'The ID of the tournament'
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'The required tournament'
+          content:
+            application/json:
+              schema:
+                properties:
+                  data: { $ref: '#/components/schemas/Tournament' }
+                type: object
+        '404':
+          description: 'No tournament has been found with this ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      tags:
+        - Tournament
+      summary: 'Update tournament'
+      operationId: 8005525d118e8b5faf9780fe28777f31
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'The ID of the team'
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        $ref: '#/components/requestBodies/TournamentUpdateRequest'
+      responses:
+        '200':
+          description: 'The updated team'
+          content:
+            application/json:
+              schema:
+                properties:
+                  data: { $ref: '#/components/schemas/Team' }
+                type: object
+        '400':
+          description: 'Input format is incorrect'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: 'Input data has not been validated'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 components:
   schemas:
     TokenCreateInput:
@@ -254,21 +360,29 @@ components:
           description: 'The ID of the winning team'
           type: integer
           nullable: true
+        tournamentId:
+          description: 'The ID of the tournament'
+          type: integer
+          nullable: true
         hostScore1:
           description: 'The score of the hosting team in the first game'
           type: integer
+          minimum: 0
           nullable: false
         guestScore1:
           description: 'The score of the receiving team in the first game'
           type: integer
+          minimum: 0
           nullable: false
         hostScore2:
           description: 'The score of the hosting team in the second game'
           type: integer
+          minimum: 0
           nullable: false
         guestScore2:
           description: 'The score of the receiving team in the second game'
           type: integer
+          minimum: 0
           nullable: false
       type: object
     TeamCreateInput:
@@ -309,33 +423,89 @@ components:
           type: string
           nullable: false
       type: object
+    TournamentCreateInput:
+      required:
+        - name
+        - startsAt
+      properties:
+        name:
+          description: 'The name of the tournament'
+          type: string
+          nullable: false
+        startsAt:
+          description: 'The starting date of the tournament'
+          type: string
+          format: date
+          nullable: false
+      type: object
+    TournamentUpdateInput:
+      required:
+        - name
+        - startsAt
+      properties:
+        name:
+          description: 'The name of the tournament'
+          type: string
+          nullable: false
+        startsAt:
+          description: 'The starting date of the tournament'
+          type: string
+          format: date
+          nullable: false
+        endsAt:
+          description: 'The ending date of the tournament'
+          type: string
+          format: date
+          nullable: true
+        goldTeamId:
+          description: 'The ID of the winning team of the tournament'
+          type: integer
+          nullable: true
+        silverTeamId:
+          description: 'The ID of the second team of the tournament'
+          type: integer
+          nullable: true
+        bronzeTeamId:
+          description: 'The ID of the third team of the tournament'
+          type: integer
+          nullable: true
+      type: object
     Game:
       required:
         - id
         - name
-        - countryCode
-        - region
-        - rating
+        - tournament
+        - hostingTeam
+        - receivingTeam
+        - gameScoreTotal
+        - gameScoreFirst
+        - gameScoreSecond
       properties:
         id:
-          description: 'The ID of the team'
+          description: 'The ID of the game'
           type: integer
           nullable: false
         name:
-          description: 'The name of the team'
+          description: 'The name of the game'
           type: string
           nullable: false
-        countryCode:
-          description: 'The country code of the team'
+        tournament:
+          $ref: '#/components/schemas/Tournament'
+        hostingTeam:
+          $ref: '#/components/schemas/Team'
+        receivingTeam:
+          $ref: '#/components/schemas/Team'
+        gameScoreTotal:
+          description: 'The global score of the game'
           type: string
           nullable: false
-        region:
-          description: 'The region of the team'
+        gameScoreFirst:
+          description: 'The score of the first subgame'
           type: string
           nullable: false
-        rating:
-          description: 'The rating of the team'
-          type: integer
+        gameScoreSecond:
+          description: 'The score of the second subgame'
+          type: string
           nullable: false
       type: object
     Team:
@@ -366,6 +536,51 @@ components:
           description: 'The rating of the team'
           type: integer
           nullable: false
+      type: object
+    Tournament:
+      required:
+        - id
+        - name
+        - countryCode
+        - region
+        - rating
+      properties:
+        id:
+          description: 'The ID of the tournament'
+          type: integer
+          nullable: false
+        name:
+          description: 'The name of the tournament'
+          type: string
+          nullable: false
+        goldTeamId:
+          oneOf:
+            -
+              $ref: '#/components/schemas/Team'
+          nullable: true
+          description: 'The winning team of the tournament'
+        silverTeamId:
+          oneOf:
+            -
+              $ref: '#/components/schemas/Team'
+          nullable: true
+          description: 'The second team of the tournament'
+        bronzeTeamId:
+          oneOf:
+            -
+              $ref: '#/components/schemas/Team'
+          nullable: true
+          description: 'The third team of the tournament'
+        startsAt:
+          description: 'The starting date of the tournament'
+          type: string
+          format: date
+          nullable: false
+        endsAt:
+          description: 'The ending date of the tournament'
+          type: string
+          format: date
+          nullable: true
       type: object
     Error:
       required:
@@ -477,6 +692,18 @@ components:
               items:
                 $ref: '#/components/schemas/Team'
           type: object
+    TournamentPaginatedCollection:
+      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/PaginatedCollection'
+        -
+          properties:
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/Tournament'
+          type: object
   requestBodies:
     TokenRequest:
       description: 'Request body for creating a JWT token'
@@ -506,6 +733,20 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/TeamUpdateInput'
+    TournamentCreateRequest:
+      description: 'Request body for creating a tournament'
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TournamentCreateInput'
+    TournamentUpdateRequest:
+      description: 'Request body for updating a tournament'
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TournamentUpdateInput'
 tags:
   -
     name: Auth
@@ -516,3 +757,6 @@ tags:
   -
     name: Team
     description: Team
+  -
+    name: Tournament
+    description: Tournament

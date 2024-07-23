@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Team;
+use App\Models\Tournament;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -20,6 +21,7 @@ class GameFactory extends Factory
         return [
             'hosting_team_id' => Team::factory(),
             'receiving_team_id' => Team::factory(),
+            'tournament_id' => Tournament::factory(),
             'winning_team_id' => null,
             'host_score_1' => fake()->numberBetween(0, 5),
             'guest_score_1' => fake()->numberBetween(0, 5),
