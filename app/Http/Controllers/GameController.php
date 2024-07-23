@@ -19,7 +19,7 @@ class GameController extends Controller
     #[OA\Post(path: '/api/games', summary: 'Create game', tags: ['Game'])]
     #[OA\RequestBody(ref: '#/components/requestBodies/GameCreateRequest')]
     #[OA\Response(response: '201', description: 'The created game', content: new OA\JsonContent(properties: [
-        new OA\Property(property: 'data', ref: '#/components/schemas/Team', type: 'object'),
+        new OA\Property(property: 'data', ref: '#/components/schemas/Game', type: 'object'),
     ]))]
     #[OA\Response(response: '400', description: 'Input format is incorrect', content: new OA\JsonContent(ref: '#/components/schemas/Error'))]
     #[OA\Response(response: '422', description: 'Input data has not been validated', content: new OA\JsonContent(ref: '#/components/schemas/Error'))]
@@ -30,6 +30,7 @@ class GameController extends Controller
         $game->hosting_team_id = $request->hostingTeamId;
         $game->receiving_team_id = $request->receivingTeamId;
         $game->winning_team_id = $request->winningTeamId;
+        $game->tournament_id = $request->tournamentId;
         $game->host_score_1 = $request->hostScore1;
         $game->guest_score_1 = $request->hostScore2;
         $game->host_score_2 = $request->guestScore1;

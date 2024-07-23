@@ -4,6 +4,7 @@ namespace Tests\Feature\Game;
 
 use App\Models\Game;
 use App\Models\Team;
+use App\Models\Tournament;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -22,6 +23,7 @@ class GameTest extends TestCase
     public function test_game_show_is_available(): void
     {
         $game = Game::factory()->create();
+
         $response = $this->get("/api/games/$game->id");
 
         $response->assertStatus(200);
@@ -31,10 +33,12 @@ class GameTest extends TestCase
     {
         $hostingTeam = Team::factory()->create();
         $receivingTeam = Team::factory()->create();
+        $tournament = Tournament::factory()->create();
 
         $response = $this->post('/api/games', [
             'hostingTeamId' => $hostingTeam->id,
             'receivingTeamId' => $receivingTeam->id,
+            'tournamentId' => $tournament->id,
             'hostScore1' => 0,
             'hostScore2' => 0,
             'guestScore1' => 0,
