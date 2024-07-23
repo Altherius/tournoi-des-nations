@@ -33,6 +33,182 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /api/games:
+    get:
+      tags:
+        - Game
+      summary: 'Get collection of games'
+      operationId: 93736f40a135111a310e4b25ad61f30b
+      responses:
+        '200':
+          description: 'A paginated collection of games'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GamePaginatedCollection'
+    post:
+      tags:
+        - Game
+      summary: 'Create game'
+      operationId: b8b9557618eb0f7b3650bdd4ab3a6487
+      requestBody:
+        $ref: '#/components/requestBodies/GameCreateRequest'
+      responses:
+        '201':
+          description: 'The created game'
+          content:
+            application/json:
+              schema:
+                properties:
+                  data: { $ref: '#/components/schemas/Game' }
+                type: object
+        '400':
+          description: 'Input format is incorrect'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: 'Input data has not been validated'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/api/games/{id}':
+    get:
+      tags:
+        - Game
+      summary: 'Get game'
+      operationId: f0bce1dcff3d56d19826d671761a43ff
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'The ID of the game'
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'The required game'
+          content:
+            application/json:
+              schema:
+                properties:
+                  data: { $ref: '#/components/schemas/Game' }
+                type: object
+        '404':
+          description: 'No game has been found with this ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /api/teams:
+    get:
+      tags:
+        - Team
+      summary: 'Get collection of teams'
+      operationId: fc1c5dd9ef530faf6e8bba930cad296c
+      responses:
+        '200':
+          description: 'A paginated collection of teams'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TeamPaginatedCollection'
+    post:
+      tags:
+        - Team
+      summary: 'Create team'
+      operationId: b05c08b4a03b1d708fc94bf7dd5f8e46
+      requestBody:
+        $ref: '#/components/requestBodies/TeamCreateRequest'
+      responses:
+        '201':
+          description: 'The created team'
+          content:
+            application/json:
+              schema:
+                properties:
+                  data: { $ref: '#/components/schemas/Team' }
+                type: object
+        '400':
+          description: 'Input format is incorrect'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: 'Input data has not been validated'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  '/api/teams/{id}':
+    get:
+      tags:
+        - Team
+      summary: 'Get team'
+      operationId: ab05003decb5cbc16154382836f51e3e
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'The ID of the team'
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: 'The required team'
+          content:
+            application/json:
+              schema:
+                properties:
+                  data: { $ref: '#/components/schemas/Team' }
+                type: object
+        '404':
+          description: 'No team has been found with this ID'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      tags:
+        - Team
+      summary: 'Update team'
+      operationId: 172602424f911881f80fc01c915f1e57
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'The ID of the team'
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        $ref: '#/components/requestBodies/TeamUpdateRequest'
+      responses:
+        '200':
+          description: 'The updated team'
+          content:
+            application/json:
+              schema:
+                properties:
+                  data: { $ref: '#/components/schemas/Team' }
+                type: object
+        '400':
+          description: 'Input format is incorrect'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: 'Input data has not been validated'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 components:
   schemas:
     TokenCreateInput:
@@ -57,6 +233,140 @@ components:
           example: Laptop
           nullable: false
       type: object
+    GameCreateInput:
+      required:
+        - hostingTeamId
+        - receivingTeamId
+        - hostScore1
+        - hostScore2
+        - guestScore1
+        - guestScore2
+      properties:
+        hostingTeamId:
+          description: 'The ID of the hosting team'
+          type: integer
+          nullable: false
+        receivingTeamId:
+          description: 'The ID of the receiving team'
+          type: integer
+          nullable: false
+        winningTeamId:
+          description: 'The ID of the winning team'
+          type: integer
+          nullable: true
+        hostScore1:
+          description: 'The score of the hosting team in the first game'
+          type: integer
+          nullable: false
+        guestScore1:
+          description: 'The score of the receiving team in the first game'
+          type: integer
+          nullable: false
+        hostScore2:
+          description: 'The score of the hosting team in the second game'
+          type: integer
+          nullable: false
+        guestScore2:
+          description: 'The score of the receiving team in the second game'
+          type: integer
+          nullable: false
+      type: object
+    TeamCreateInput:
+      required:
+        - name
+        - country_code
+        - region
+      properties:
+        name:
+          description: 'The name of the team'
+          type: string
+          nullable: false
+        countryCode:
+          description: 'The country code of the team'
+          type: string
+          nullable: false
+        region:
+          description: 'The region of the team'
+          type: string
+          nullable: false
+      type: object
+    TeamUpdateInput:
+      required:
+        - name
+        - country_code
+        - region
+      properties:
+        name:
+          description: 'The name of the team'
+          type: string
+          nullable: false
+        countryCode:
+          description: 'The country code of the team'
+          type: string
+          nullable: false
+        region:
+          description: 'The region of the team'
+          type: string
+          nullable: false
+      type: object
+    Game:
+      required:
+        - id
+        - name
+        - countryCode
+        - region
+        - rating
+      properties:
+        id:
+          description: 'The ID of the team'
+          type: integer
+          nullable: false
+        name:
+          description: 'The name of the team'
+          type: string
+          nullable: false
+        countryCode:
+          description: 'The country code of the team'
+          type: string
+          nullable: false
+        region:
+          description: 'The region of the team'
+          type: string
+          nullable: false
+        rating:
+          description: 'The rating of the team'
+          type: integer
+          nullable: false
+      type: object
+    Team:
+      required:
+        - id
+        - name
+        - countryCode
+        - region
+        - rating
+      properties:
+        id:
+          description: 'The ID of the team'
+          type: integer
+          nullable: false
+        name:
+          description: 'The name of the team'
+          type: string
+          nullable: false
+        countryCode:
+          description: 'The country code of the team'
+          type: string
+          nullable: false
+        region:
+          description: 'The region of the team'
+          type: string
+          nullable: false
+        rating:
+          description: 'The rating of the team'
+          type: integer
+          nullable: false
+      type: object
     Error:
       required:
         - message
@@ -70,6 +380,103 @@ components:
           type: object
           nullable: false
       type: object
+    GamePaginatedCollection:
+      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/PaginatedCollection'
+        -
+          properties:
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/Game'
+          type: object
+    PaginatedCollection:
+      required:
+        - data
+        - links
+        - meta
+      properties:
+        links:
+          required:
+            - first
+            - last
+            - prev
+            - next
+          properties:
+            first:
+              type: string
+              nullable: false
+            last:
+              type: string
+              nullable: false
+            prev:
+              type: string
+              nullable: true
+            next:
+              type: string
+              nullable: true
+          type: object
+        meta:
+          required:
+            - current_page
+            - last_page
+            - from
+            - to
+            - per_page
+            - total
+            - links
+            - path
+          properties:
+            current_page:
+              type: integer
+              nullable: false
+            last_page:
+              type: integer
+              nullable: false
+            from:
+              type: integer
+              nullable: false
+            to:
+              type: integer
+              nullable: false
+            per_page:
+              type: integer
+              nullable: false
+            total:
+              type: integer
+              nullable: false
+            links:
+              type: array
+              items:
+                required:
+                  - url
+                  - label
+                  - active
+                properties:
+                  url: { type: string, nullable: true }
+                  label: { type: string, nullable: false }
+                  active: { type: boolean, nullable: false }
+                type: object
+              nullable: false
+            path:
+              type: string
+              nullable: false
+          type: object
+      type: object
+    TeamPaginatedCollection:
+      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/PaginatedCollection'
+        -
+          properties:
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/Team'
+          type: object
   requestBodies:
     TokenRequest:
       description: 'Request body for creating a JWT token'
@@ -78,7 +485,34 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/TokenCreateInput'
+    GameCreateRequest:
+      description: 'Request body for creating a game'
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/GameCreateInput'
+    TeamCreateRequest:
+      description: 'Request body for creating a team'
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TeamCreateInput'
+    TeamUpdateRequest:
+      description: 'Request body for updating a team'
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TeamUpdateInput'
 tags:
   -
     name: Auth
     description: Auth
+  -
+    name: Game
+    description: Game
+  -
+    name: Team
+    description: Team
