@@ -30,7 +30,7 @@ class TeamTest extends TestCase
         $response = $this->post('/api/teams', [
             'name' => 'France',
             'countryCode' => 'FR',
-            'region' => 'europe'
+            'region' => 'europe',
         ]);
 
         $response->assertStatus(201);
@@ -43,7 +43,7 @@ class TeamTest extends TestCase
         $response = $this->put("/api/teams/$team->id", [
             'name' => 'France',
             'countryCode' => 'FR',
-            'region' => 'europe'
+            'region' => 'europe',
         ]);
 
         $response->assertStatus(200);

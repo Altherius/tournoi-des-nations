@@ -7,7 +7,6 @@ use PHPUnit\Framework\TestCase;
 
 class EloCalculatorTest extends TestCase
 {
-    
     public function test_exchanged_points_is_null_in_same_rating_draw(): void
     {
         $elo = new EloCalculator();

@@ -14,8 +14,5 @@ class GameCreated
     /**
      * Create a new event instance.
      */
-    public function __construct(public Game $game)
-    {
-        
-    }
+    public function __construct(public Game $game) {}
 }

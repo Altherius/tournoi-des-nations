@@ -2,8 +2,10 @@
 
 namespace App\Http\Requests\Team;
 
+use App\Enum\Region;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 use OpenApi\Attributes as OA;
 
 /**
@@ -47,7 +49,7 @@ class TeamUpdateRequest extends FormRequest
         return [
             'name' => 'required',
             'countryCode' => 'required',
-            'region' => 'required',
+            'region' => ['required', Rule::enum(Region::class)],
         ];
     }
 }

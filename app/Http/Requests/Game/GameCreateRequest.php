@@ -22,10 +22,10 @@ use OpenApi\Attributes as OA;
         new OA\Property(property: 'hostingTeamId', description: 'The ID of the hosting team', type: 'integer', nullable: false),
         new OA\Property(property: 'receivingTeamId', description: 'The ID of the receiving team', type: 'integer', nullable: false),
         new OA\Property(property: 'winningTeamId', description: 'The ID of the winning team', type: 'integer', nullable: true),
-        new OA\Property(property: 'hostScore1', description: 'The score of the hosting team in the first game', type: 'integer', nullable: false),
-        new OA\Property(property: 'guestScore1', description: 'The score of the receiving team in the first game', type: 'integer', nullable: false),
-        new OA\Property(property: 'hostScore2', description: 'The score of the hosting team in the second game', type: 'integer', nullable: false),
-        new OA\Property(property: 'guestScore2', description: 'The score of the receiving team in the second game', type: 'integer', nullable: false),
+        new OA\Property(property: 'hostScore1', description: 'The score of the hosting team in the first game', type: 'integer', minimum: 0, nullable: false),
+        new OA\Property(property: 'guestScore1', description: 'The score of the receiving team in the first game', type: 'integer', minimum: 0, nullable: false),
+        new OA\Property(property: 'hostScore2', description: 'The score of the hosting team in the second game', type: 'integer', minimum: 0, nullable: false),
+        new OA\Property(property: 'guestScore2', description: 'The score of the receiving team in the second game', type: 'integer', minimum: 0, nullable: false),
     ]
 )]
 #[OA\RequestBody(
@@ -53,12 +53,13 @@ class GameCreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'hostingTeamId' => 'required',
-            'receivingTeamId' => 'required',
-            'hostScore1' => 'required',
-            'guestScore1' => 'required',
-            'hostScore2' => 'required',
-            'guestScore2' => 'required',
+            'hostingTeamId' => 'required|exists:teams,id',
+            'receivingTeamId' => 'required|exists:teams,id',
+            'winningTeamId' => 'exists:teams,id',
+            'hostScore1' => 'required|gte:0',
+            'guestScore1' => 'required|gte:0',
+            'hostScore2' => 'required|gte:0',
+            'guestScore2' => 'required|gte:0',
         ];
     }
 }

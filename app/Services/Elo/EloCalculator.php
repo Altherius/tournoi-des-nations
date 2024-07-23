@@ -3,11 +3,10 @@
 namespace App\Services\Elo;
 
 use App\Enum\GameResult;
-use App\Models\Game;
 
 class EloCalculator
 {
-    /* 
+    /*
     The K factor, used to potentially multiply the number of exchanged points.
     */
     private const K = 80.;
@@ -23,10 +22,9 @@ class EloCalculator
         return (int) $this->getGoalDiffMultiplier(abs($goalsDiff)) * $this->getBaseExchangedPoints($subjectRating, $opponentRating, $result);
     }
 
-
-
-    private function getResultFactor(GameResult $result): float {
-        return match($result) {
+    private function getResultFactor(GameResult $result): float
+    {
+        return match ($result) {
             GameResult::LOSS => 0.,
             GameResult::DRAW => .5,
             GameResult::WIN => 1.,
