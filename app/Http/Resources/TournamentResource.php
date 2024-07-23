@@ -31,9 +31,9 @@ class TournamentResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'goldTeam' => new TeamResource($this->goldTeam),
-            'silverTeam' => new TeamResource($this->silverTeam),
-            'bronzeTeam' => new TeamResource($this->bronzeTeam),
+            'goldTeam' => new TeamResource($this->whenLoaded('goldTeam')),
+            'silverTeam' => new TeamResource($this->whenLoaded('silverTeam')),
+            'bronzeTeam' => new TeamResource($this->whenLoaded('bronzeTeam')),
             'startsAt' => $this->starts_at,
             'endsAt' => $this->ends_at,
         ];

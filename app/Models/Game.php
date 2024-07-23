@@ -21,6 +21,11 @@ class Game extends Model
         return $this->belongsTo(Team::class, 'receiving_team_id');
     }
 
+    public function tournament(): BelongsTo
+    {
+        return $this->belongsTo(Tournament::class);
+    }
+
     protected $dispatchesEvents = [
         'created' => GameCreated::class,
     ];
