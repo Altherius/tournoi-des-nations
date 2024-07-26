@@ -11,7 +11,7 @@ class EloCalculator
     */
     private const K = 80.;
 
-    public function getExchangedPoints(int $subjectRating, int $opponentRating, int $goalsDiff): int
+    public function getExchangedPoints(int $subjectRating, int $opponentRating, int $goalsDiff, float $tournamentMultiplier): int
     {
         if ($goalsDiff === 0) {
             $result = GameResult::DRAW;
@@ -19,7 +19,10 @@ class EloCalculator
             $result = $goalsDiff > 0 ? GameResult::WIN : GameResult::LOSS;
         }
 
-        return (int) $this->getGoalDiffMultiplier(abs($goalsDiff)) * $this->getBaseExchangedPoints($subjectRating, $opponentRating, $result);
+        $baseExchangedPoints = $this->getBaseExchangedPoints($subjectRating, $opponentRating, $result);
+        $goalsDiffMultiplier = $this->getGoalDiffMultiplier(abs($goalsDiff));
+
+        return (int) ($baseExchangedPoints * $goalsDiffMultiplier * $tournamentMultiplier);
     }
 
     private function getResultFactor(GameResult $result): float

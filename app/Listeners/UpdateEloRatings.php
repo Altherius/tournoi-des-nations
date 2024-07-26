@@ -26,7 +26,7 @@ class UpdateEloRatings
         $opponentRating = $event->game->receivingTeam->rating;
         $goalsDiff = ($event->game->host_score_1 + $event->game->host_score_2) - ($event->game->guest_score_1 + $event->game->guest_score_2);
 
-        $exchangedPoints = $eloCalculator->getExchangedPoints($subjectRating, $opponentRating, $goalsDiff);
+        $exchangedPoints = $eloCalculator->getExchangedPoints($subjectRating, $opponentRating, $goalsDiff, $event->game->tournament->elo_multiplier);
 
         $event->game->hostingTeam->rating += $exchangedPoints;
         $event->game->receivingTeam->rating -= $exchangedPoints;
