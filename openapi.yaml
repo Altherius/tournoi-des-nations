@@ -33,12 +33,35 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  '/api/teams/{team}/elo-history':
+    get:
+      tags:
+        - Team
+      summary: 'Get the paginated Elo History of a Team'
+      operationId: 75374693ab23d77ba9b825ccf43bbd99
+      parameters:
+        -
+          name: page
+          in: query
+          description: 'The page number'
+      responses:
+        '200':
+          description: 'The paginated Elo History of the team'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EloHistoryEntryPaginatedCollection'
   /api/games:
     get:
       tags:
         - Game
       summary: 'Get collection of games'
       operationId: 93736f40a135111a310e4b25ad61f30b
+      parameters:
+        -
+          name: page
+          in: query
+          description: 'The page number'
       responses:
         '200':
           description: 'A paginated collection of games'
@@ -109,6 +132,11 @@ paths:
         - Team
       summary: 'Get collection of teams'
       operationId: fc1c5dd9ef530faf6e8bba930cad296c
+      parameters:
+        -
+          name: page
+          in: query
+          description: 'The page number'
       responses:
         '200':
           description: 'A paginated collection of teams'
@@ -217,6 +245,10 @@ paths:
       operationId: 325c991fa7a42ed8adf0452168455a33
       parameters:
         -
+          name: page
+          in: query
+          description: 'The page number'
+        -
           name: id
           in: path
           description: 'The ID of the team'
@@ -242,6 +274,11 @@ paths:
         - Tournament
       summary: 'Get collection of tournaments'
       operationId: 8626d4f0c19b7c5d27dce357833b6b97
+      parameters:
+        -
+          name: page
+          in: query
+          description: 'The page number'
       responses:
         '200':
           description: 'A paginated collection of tournaments'
@@ -356,6 +393,10 @@ paths:
           required: true
           schema:
             type: integer
+        -
+          name: page
+          in: query
+          description: 'The page number'
       responses:
         '200':
           description: 'A paginated collection of games'
@@ -524,6 +565,26 @@ components:
           type: integer
           nullable: true
       type: object
+    EloHistoryEntry:
+      required:
+        - id
+        - rating
+        - date
+      properties:
+        id:
+          description: 'The ID of the entry'
+          type: integer
+          nullable: false
+        rating:
+          description: 'The rating of the Team'
+          type: integer
+          nullable: false
+        date:
+          description: 'The date of the entry'
+          type: string
+          format: datetime
+          nullable: false
+      type: object
     Game:
       required:
         - id
@@ -649,6 +710,18 @@ components:
           type: object
           nullable: false
       type: object
+    EloHistoryEntryPaginatedCollection:
+      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/PaginatedCollection'
+        -
+          properties:
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/EloHistoryEntry'
+          type: object
     GamePaginatedCollection:
       type: object
       allOf:
@@ -806,11 +879,11 @@ tags:
     name: Auth
     description: Auth
   -
-    name: Game
-    description: Game
-  -
     name: Team
     description: Team
+  -
+    name: Game
+    description: Game
   -
     name: Tournament
     description: Tournament

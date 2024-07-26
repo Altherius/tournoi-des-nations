@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\GameCreated;
+use App\Models\EloHistoryEntry;
 use App\Services\Elo\EloCalculator;
 
 class UpdateEloRatings
@@ -29,6 +30,17 @@ class UpdateEloRatings
 
         $event->game->hostingTeam->rating += $exchangedPoints;
         $event->game->receivingTeam->rating -= $exchangedPoints;
+
+        $hostingTeamEloHistoryEntry = new EloHistoryEntry;
+        $hostingTeamEloHistoryEntry->team_id = $event->game->hostingTeam->id;
+        $hostingTeamEloHistoryEntry->rating = $event->game->hostingTeam->rating;
+
+        $receivingTeamEloHistoryEntry = new EloHistoryEntry;
+        $receivingTeamEloHistoryEntry->team_id = $event->game->receivingTeam->id;
+        $receivingTeamEloHistoryEntry->rating = $event->game->receivingTeam->rating;
+
+        $hostingTeamEloHistoryEntry->save();
+        $receivingTeamEloHistoryEntry->save();
 
         $event->game->hostingTeam->save();
         $event->game->receivingTeam->save();
