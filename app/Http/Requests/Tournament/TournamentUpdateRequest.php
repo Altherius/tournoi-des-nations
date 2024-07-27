@@ -8,6 +8,7 @@ use OpenApi\Attributes as OA;
 
 /**
  * @property string $name
+ * @property float $eloMultiplier
  * @property string $startsAt
  */
 #[OA\Schema(
@@ -15,6 +16,7 @@ use OpenApi\Attributes as OA;
     required: ['name', 'startsAt'],
     properties: [
         new OA\Property(property: 'name', description: 'The name of the tournament', type: 'string', nullable: false),
+        new OA\Property(property: 'elo_multiplier', description: 'The elo multiplier of the tournament', type: 'float', minimum: 0, nullable: false),
         new OA\Property(property: 'startsAt', description: 'The starting date of the tournament', type: 'string', format: 'date', nullable: false),
         new OA\Property(property: 'endsAt', description: 'The ending date of the tournament', type: 'string', format: 'date', nullable: true),
         new OA\Property(property: 'goldTeamId', description: 'The ID of the winning team of the tournament', type: 'integer', nullable: true),

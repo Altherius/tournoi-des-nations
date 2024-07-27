@@ -8,10 +8,11 @@ use OpenApi\Attributes as OA;
 
 #[OA\Schema(
     schema: 'Tournament',
-    required: ['id', 'name', 'countryCode', 'region', 'rating'],
+    required: ['id', 'name', 'eloMultiplier', 'countryCode', 'region', 'rating'],
     properties: [
         new OA\Property(property: 'id', description: 'The ID of the tournament', type: 'integer', nullable: false),
         new OA\Property(property: 'name', description: 'The name of the tournament', type: 'string', nullable: false),
+        new OA\Property(property: 'eloMultiplier', description: 'The elo multiplier of the tournament', type: 'float', minimum: 0, nullable: false),
         new OA\Property(property: 'goldTeamId', description: 'The winning team of the tournament', ref: '#/components/schemas/Team', nullable: true),
         new OA\Property(property: 'silverTeamId', description: 'The second team of the tournament', ref: '#/components/schemas/Team', nullable: true),
         new OA\Property(property: 'bronzeTeamId', description: 'The third team of the tournament', ref: '#/components/schemas/Team', nullable: true),
@@ -31,6 +32,7 @@ class TournamentResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'eloMultiplier' => $this->elo_multiplier,
             'goldTeam' => new TeamResource($this->whenLoaded('goldTeam')),
             'silverTeam' => new TeamResource($this->whenLoaded('silverTeam')),
             'bronzeTeam' => new TeamResource($this->whenLoaded('bronzeTeam')),
