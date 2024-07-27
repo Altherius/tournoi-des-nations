@@ -11,7 +11,7 @@ class EloCalculator
     */
     private const K = 80.;
 
-    public function getExchangedPoints(int $subjectRating, int $opponentRating, int $goalsDiff, float $tournamentMultiplier): int
+    public function getExchangedPoints(int $subjectRating, int $opponentRating, int $goalsDiff, float $tournamentMultiplier = 1.0): int
     {
         if ($goalsDiff === 0) {
             $result = GameResult::DRAW;
