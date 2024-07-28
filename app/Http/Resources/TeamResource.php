@@ -30,7 +30,7 @@ class TeamResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'countryCode' => $this->country_code,
-            'region' => $this->region,
+            'region' => $this->region->name(),
             'rating' => $this->rating,
         ];
     }
