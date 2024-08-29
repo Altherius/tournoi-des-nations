@@ -13,11 +13,11 @@ use OpenApi\Attributes as OA;
 class TeamController extends Controller
 {
     #[OA\Get(path: '/api/teams', summary: 'Get collection of teams', tags: ['Team'])]
-    #[OA\Parameter(name: 'page', in: 'query', description: 'The page number')]
+    #[OA\Parameter(name: 'page', in: 'query', description: 'The page number', schema: new OA\Schema(type: 'integer'))]
     #[OA\Response(response: '200', description: 'A paginated collection of teams', content: new OA\JsonContent(ref: '#/components/schemas/TeamPaginatedCollection'))]
     public function index()
     {
-        return TeamResource::collection(Team::paginate());
+        return TeamResource::collection(Team::with('gamesHosting')->with('gamesReceiving')->paginate());
     }
 
     #[OA\Post(path: '/api/teams', summary: 'Create team', tags: ['Team'])]
@@ -53,7 +53,7 @@ class TeamController extends Controller
     }
 
     #[OA\Get(path: '/api/teams/{id}/games', summary: 'Get games linked to a team', tags: ['Game'])]
-    #[OA\Parameter(name: 'page', in: 'query', description: 'The page number')]
+    #[OA\Parameter(name: 'page', in: 'query', description: 'The page number', schema: new OA\Schema(type: 'integer'))]
     #[OA\Parameter(name: 'id', description: 'The ID of the team', in: 'path', required: true, schema: new OA\Schema(type: 'integer'))]
     #[OA\Response(response: '200', description: 'A paginated collection of games', content: new OA\JsonContent(ref: '#/components/schemas/GamePaginatedCollection'))]
     #[OA\Response(response: '404', description: 'No team has been found with this ID', content: new OA\JsonContent(ref: '#/components/schemas/Error'))]

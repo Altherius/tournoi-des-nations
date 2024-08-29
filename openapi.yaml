@@ -44,6 +44,15 @@ paths:
           name: page
           in: query
           description: 'The page number'
+          schema:
+            type: integer
+        -
+          name: team
+          in: path
+          description: 'The team ID'
+          required: true
+          schema:
+            type: integer
       responses:
         '200':
           description: 'The paginated Elo History of the team'
@@ -62,6 +71,8 @@ paths:
           name: page
           in: query
           description: 'The page number'
+          schema:
+            type: integer
       responses:
         '200':
           description: 'A paginated collection of games'
@@ -137,6 +148,8 @@ paths:
           name: page
           in: query
           description: 'The page number'
+          schema:
+            type: integer
       responses:
         '200':
           description: 'A paginated collection of teams'
@@ -248,6 +261,8 @@ paths:
           name: page
           in: query
           description: 'The page number'
+          schema:
+            type: integer
         -
           name: id
           in: path
@@ -279,6 +294,8 @@ paths:
           name: page
           in: query
           description: 'The page number'
+          schema:
+            type: integer
       responses:
         '200':
           description: 'A paginated collection of tournaments'
@@ -397,6 +414,8 @@ paths:
           name: page
           in: query
           description: 'The page number'
+          schema:
+            type: integer
       responses:
         '200':
           description: 'A paginated collection of games'
@@ -521,11 +540,18 @@ components:
     TournamentCreateInput:
       required:
         - name
+        - eloMultiplier
         - startsAt
       properties:
         name:
           description: 'The name of the tournament'
           type: string
+          nullable: false
+        elo_multiplier:
+          description: 'The elo multiplier of the tournament'
+          type: number
+          format: float
+          minimum: 0
           nullable: false
         startsAt:
           description: 'The starting date of the tournament'
@@ -541,6 +567,12 @@ components:
         name:
           description: 'The name of the tournament'
           type: string
+          nullable: false
+        elo_multiplier:
+          description: 'The elo multiplier of the tournament'
+          type: number
+          format: float
+          minimum: 0
           nullable: false
         startsAt:
           description: 'The starting date of the tournament'
@@ -630,6 +662,11 @@ components:
         - countryCode
         - region
         - rating
+        - gamesCount
+        - winsCount
+        - lossCount
+        - drawCount
+        - lastResults
       properties:
         id:
           description: 'The ID of the team'
@@ -651,11 +688,52 @@ components:
           description: 'The rating of the team'
           type: integer
           nullable: false
+        gamesCount:
+          description: 'The total number of games of the team'
+          type: integer
+          nullable: false
+        winsCount:
+          description: 'The total number of games won by the team'
+          type: integer
+          nullable: false
+        lossCount:
+          description: 'The total number of games lost by the team'
+          type: integer
+          nullable: false
+        drawCount:
+          description: 'The total number of games drewn by the team'
+          type: integer
+          nullable: false
+        lastResults:
+          description: 'A short description of the last results of the team'
+          type: array
+          items:
+            $ref: '#/components/schemas/LastResult'
+          nullable: false
+      type: object
+    LastResult:
+      required:
+        - name
+        - result
+      properties:
+        name:
+          description: 'The name of the game'
+          type: string
+          nullable: false
+        result:
+          description: 'The result of the game'
+          type: string
+          enum:
+            - loss
+            - draw
+            - win
+          nullable: false
       type: object
     Tournament:
       required:
         - id
         - name
+        - eloMultiplier
         - countryCode
         - region
         - rating
@@ -667,6 +745,12 @@ components:
         name:
           description: 'The name of the tournament'
           type: string
+          nullable: false
+        eloMultiplier:
+          description: 'The elo multiplier of the tournament'
+          type: number
+          format: float
+          minimum: 0
           nullable: false
         goldTeamId:
           oneOf:
