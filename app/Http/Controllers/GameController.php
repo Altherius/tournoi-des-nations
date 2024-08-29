@@ -10,7 +10,7 @@ use OpenApi\Attributes as OA;
 class GameController extends Controller
 {
     #[OA\Get(path: '/api/games', summary: 'Get collection of games', tags: ['Game'])]
-    #[OA\Parameter(name: 'page', in: 'query', description: 'The page number')]
+    #[OA\Parameter(name: 'page', in: 'query', description: 'The page number', schema: new OA\Schema(type: 'integer'))]
     #[OA\Response(response: '200', description: 'A paginated collection of games', content: new OA\JsonContent(ref: '#/components/schemas/GamePaginatedCollection'))]
     public function index()
     {
