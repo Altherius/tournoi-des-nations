@@ -14,3 +14,4 @@ Route::get('/teams/{team}/elo-history', [EloHistoryEntryController::class, 'team
 Route::post('/token', [ApiTokenController::class, 'token']);
 Route::apiResource('/tournaments', TournamentController::class)->except('destroy');
 Route::get('/tournaments/{tournament}/games', [TournamentController::class, 'games']);
+Route::post('/tournament-roster/generate', [TournamentController::class, 'generateRoster']);

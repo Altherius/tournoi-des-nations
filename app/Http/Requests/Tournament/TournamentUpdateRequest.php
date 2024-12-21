@@ -8,8 +8,12 @@ use OpenApi\Attributes as OA;
 
 /**
  * @property string $name
- * @property float $eloMultiplier
+ * @property float  $eloMultiplier
  * @property string $startsAt
+ * @property string $endsAt
+ * @property int    $goldTeamId
+ * @property int    $silverTeamId
+ * @property int    $bronzeTeamId
  */
 #[OA\Schema(
     schema: 'TournamentUpdateInput',
