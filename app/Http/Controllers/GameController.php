@@ -10,11 +10,18 @@ use OpenApi\Attributes as OA;
 class GameController extends Controller
 {
     #[OA\Get(path: '/api/games', summary: 'Get collection of games', tags: ['Game'])]
-    #[OA\Parameter(name: 'page', in: 'query', description: 'The page number', schema: new OA\Schema(type: 'integer'))]
+    #[OA\Parameter(name: 'page', description: 'The page number', in: 'query', schema: new OA\Schema(type: 'integer'))]
     #[OA\Response(response: '200', description: 'A paginated collection of games', content: new OA\JsonContent(ref: '#/components/schemas/GamePaginatedCollection'))]
     public function index()
     {
         return GameResource::collection(Game::with(['hostingTeam', 'receivingTeam'])->paginate());
+    }
+
+    #[OA\Get(path: '/api/games/recent', summary: 'Get the 4 most recent games', tags: ['Game'])]
+    #[OA\Response(response: '200', description: 'A paginated collection of games', content: new OA\JsonContent(ref: '#/components/schemas/GamePaginatedCollection'))]
+    public function recent()
+    {
+        return GameResource::collection(Game::with(['hostingTeam', 'receivingTeam'])->orderBy('created_at', 'desc')->limit(4)->get());
     }
 
     #[OA\Post(path: '/api/games', summary: 'Create game', tags: ['Game'])]

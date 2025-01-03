@@ -30,7 +30,8 @@ use OpenApi\Attributes\Property;
     required: ['name', 'result'],
     properties: [
         new Property(property: 'name', description: 'The name of the game', type: 'string', nullable: false),
-        new Property(property: 'result', description: 'The result of the game', type: 'string', nullable: false, enum: ['loss', 'draw', 'win']),
+        new Property(property: 'result', description: 'The result of the game', type: 'string', enum: ['loss', 'draw', 'win'],
+            nullable: false),
     ]
 )]
 class TeamResource extends JsonResource
@@ -98,10 +99,11 @@ class TeamResource extends JsonResource
             'countryCode' => $this->country_code,
             'region' => $this->region->name(),
             'rating' => $this->rating,
-            'gameCount' => $this->games_hosting_count + $this->games_receiving_count,
+            'gameCount' => $winsCount + $lossCount + $drawCount,
             'winsCount' => $winsCount,
             'lossCount' => $lossCount,
             'drawCount' => $drawCount,
+            'eloProgression' => round(($this->rating - 1000) / ($winsCount + $lossCount + $drawCount), 2),
             'lastResults' => $lastResults,
         ];
     }

@@ -7,6 +7,7 @@ use App\Http\Controllers\TeamController;
 use App\Http\Controllers\TournamentController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/games/recent', [GameController::class, 'recent']);
 Route::apiResource('/games', GameController::class)->only(['index', 'store', 'show']);
 Route::apiResource('/teams', TeamController::class)->except('destroy');
 Route::get('/teams/{team}/games', [TeamController::class, 'games']);
