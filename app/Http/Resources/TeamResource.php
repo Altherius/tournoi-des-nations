@@ -30,6 +30,8 @@ use OpenApi\Attributes\Property;
     required: ['name', 'result'],
     properties: [
         new Property(property: 'name', description: 'The name of the game', type: 'string', nullable: false),
+        new Property(property: 'hostingTeamCountryCode', description: 'The country code of the hosting team', type: 'string', nullable: false),
+        new Property(property: 'receivingTeamCountryCode', description: 'The country code of the hosting team', type: 'string', nullable: false),
         new Property(property: 'result', description: 'The result of the game', type: 'string', enum: ['loss', 'draw', 'win'],
             nullable: false),
     ]
@@ -89,6 +91,8 @@ class TeamResource extends JsonResource
 
             $lastResults[] = [
                 'name' => $game->hostingTeam->name.' - '.$game->receivingTeam->name,
+                'hostingTeamCountryCode' => $game->hostingTeam->country_code,
+                'receivingTeamCountryCode' => $game->receivingTeam->country_code,
                 'result' => $result,
             ];
         }
