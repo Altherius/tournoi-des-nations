@@ -93,6 +93,12 @@ class TeamResource extends JsonResource
             ];
         }
 
+        if ($winsCount + $lossCount + $drawCount === 0) {
+            $eloProgression = 0;
+        } else {
+            $eloProgression = round(($this->rating - 1000) / ($winsCount + $lossCount + $drawCount), 2);
+        }
+
         return [
             'id' => $this->id,
             'name' => $this->name,
@@ -103,7 +109,7 @@ class TeamResource extends JsonResource
             'winsCount' => $winsCount,
             'lossCount' => $lossCount,
             'drawCount' => $drawCount,
-            'eloProgression' => round(($this->rating - 1000) / ($winsCount + $lossCount + $drawCount), 2),
+            'eloProgression' => $eloProgression,
             'lastResults' => $lastResults,
         ];
     }
