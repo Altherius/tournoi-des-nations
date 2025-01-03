@@ -16,6 +16,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->float('elo_multiplier')->default(1.0);
+            $table->boolean('major')->default(false);
             $table->foreignIdFor(Team::class, 'gold_team_id')->nullable();
             $table->foreignIdFor(Team::class, 'silver_team_id')->nullable();
             $table->foreignIdFor(Team::class, 'bronze_team_id')->nullable();
