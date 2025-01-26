@@ -30,6 +30,9 @@ class TournamentTest extends TestCase
         $response = $this->post('/api/tournaments', [
             'name' => 'Tournoi des nations',
             'startsAt' => '1970-01-01',
+            'major' => true,
+            'balancing' => false,
+            'eloMultiplier' => 1,
         ]);
 
         $response->assertStatus(201);
