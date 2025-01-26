@@ -40,8 +40,8 @@ class GameController extends Controller
         $game->winning_team_id = $request->winningTeamId;
         $game->tournament_id = $request->tournamentId;
         $game->host_score_1 = $request->hostScore1;
-        $game->guest_score_1 = $request->hostScore2;
-        $game->host_score_2 = $request->guestScore1;
+        $game->guest_score_1 = $request->guestScore1;
+        $game->host_score_2 = $request->hostScore2;
         $game->guest_score_2 = $request->guestScore2;
 
         $game->save();
