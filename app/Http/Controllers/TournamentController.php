@@ -13,7 +13,7 @@ use OpenApi\Attributes as OA;
 class TournamentController extends Controller
 {
     #[OA\Get(path: '/api/tournaments', summary: 'Get collection of tournaments', tags: ['Tournament'])]
-    #[OA\Parameter(name: 'page', in: 'query', description: 'The page number', schema: new OA\Schema(type: 'integer'))]
+    #[OA\Parameter(name: 'page', description: 'The page number', in: 'query', schema: new OA\Schema(type: 'integer'))]
     #[OA\Response(response: '200', description: 'A paginated collection of tournaments', content: new OA\JsonContent(ref: '#/components/schemas/TournamentPaginatedCollection'))]
     public function index()
     {
@@ -33,6 +33,9 @@ class TournamentController extends Controller
 
         $tournament->name = $request->name;
         $tournament->starts_at = $request->startsAt;
+        $tournament->major = $request->major;
+        $tournament->balancing = $request->balancing;
+        $tournament->elo_multiplier = $request->eloMultiplier;
         $tournament->save();
 
         return new TournamentResource($tournament);
@@ -55,7 +58,7 @@ class TournamentController extends Controller
 
     #[OA\Get(path: '/api/tournaments/{id}/games', summary: 'Get games linked to a tournament', tags: ['Game'])]
     #[OA\Parameter(name: 'id', description: 'The ID of the tournament', in: 'path', required: true, schema: new OA\Schema(type: 'integer'))]
-    #[OA\Parameter(name: 'page', in: 'query', description: 'The page number', schema: new OA\Schema(type: 'integer'))]
+    #[OA\Parameter(name: 'page', description: 'The page number', in: 'query', schema: new OA\Schema(type: 'integer'))]
     #[OA\Response(response: '200', description: 'A paginated collection of games', content: new OA\JsonContent(ref: '#/components/schemas/GamePaginatedCollection'))]
     #[OA\Response(response: '404', description: 'No tournament has been found with this ID', content: new OA\JsonContent(ref: '#/components/schemas/Error'))]
     public function games(Tournament $tournament)

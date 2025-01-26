@@ -39,6 +39,7 @@ class TournamentResource extends JsonResource
             'name' => $this->name,
             'eloMultiplier' => $this->elo_multiplier,
             'major' => $this->major,
+            'balancing' => $this->balancing,
             'goldTeam' => new TeamResource($this->whenLoaded('goldTeam')),
             'silverTeam' => new TeamResource($this->whenLoaded('silverTeam')),
             'bronzeTeam' => new TeamResource($this->whenLoaded('bronzeTeam')),
