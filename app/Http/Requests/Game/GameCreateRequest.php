@@ -55,7 +55,7 @@ class GameCreateRequest extends FormRequest
     {
         return [
             'hostingTeamId' => 'required|exists:teams,id',
-            'receivingTeamId' => 'required|exists:teams,id',
+            'receivingTeamId' => 'required|exists:teams,id|different:hostingTeamId',
             'winningTeamId' => 'exists:teams,id',
             'tournamentId' => 'exists:tournaments,id',
             'hostScore1' => 'required|gte:0',
