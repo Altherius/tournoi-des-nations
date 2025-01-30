@@ -13,13 +13,12 @@ use OpenApi\Attributes as OA;
  */
 #[OA\Schema(
     schema: 'TournamentCreateInput',
-    required: ['name', 'eloMultiplier', 'startsAt'],
+    required: ['name', 'eloMultiplier', 'balancing', 'major'],
     properties: [
         new OA\Property(property: 'name', description: 'The name of the tournament', type: 'string', nullable: false),
         new OA\Property(property: 'major', description: 'Is the tournament a major tournament', type: 'boolean', default: true, nullable: false),
         new OA\Property(property: 'balancing', description: 'Is the tournament a balancing tournament', type: 'boolean', default: false, nullable: false),
         new OA\Property(property: 'eloMultiplier', description: 'The elo multiplier of the tournament', type: 'float', minimum: 0, nullable: false),
-        new OA\Property(property: 'startsAt', description: 'The starting date of the tournament', type: 'string', format: 'date', nullable: false),
     ]
 )]
 #[OA\RequestBody(
@@ -48,7 +47,6 @@ class TournamentCreateRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'startsAt' => 'required|date',
             'major' => 'required|bool',
             'balancing' => 'required|bool',
             'eloMultiplier' => 'required|min:0',

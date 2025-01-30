@@ -12,12 +12,18 @@ use OpenApi\Attributes as OA;
     properties: [
         new OA\Property(property: 'id', description: 'The ID of the game', type: 'integer', nullable: false),
         new OA\Property(property: 'name', description: 'The name of the game', type: 'string', nullable: false),
-        new OA\Property(property: 'tournament', description: 'The tournament of the game', ref: '#/components/schemas/Tournament', nullable: false),
-        new OA\Property(property: 'hostingTeam', description: 'The hosting team of the game', ref: '#/components/schemas/Team', nullable: false),
-        new OA\Property(property: 'receivingTeam', description: 'The receiving team of the game', ref: '#/components/schemas/Team', nullable: false),
-        new OA\Property(property: 'gameScoreTotal', description: 'The global score of the game', type: 'string', nullable: false),
-        new OA\Property(property: 'gameScoreFirst', description: 'The score of the first subgame', type: 'string', nullable: false),
-        new OA\Property(property: 'gameScoreSecond', description: 'The score of the second subgame', type: 'string', nullable: false),
+        new OA\Property(property: 'tournament', ref: '#/components/schemas/Tournament',
+            description: 'The tournament of the game', nullable: false),
+        new OA\Property(property: 'hostingTeam', ref: '#/components/schemas/Team',
+            description: 'The hosting team of the game', nullable: false),
+        new OA\Property(property: 'receivingTeam', ref: '#/components/schemas/Team',
+            description: 'The receiving team of the game', nullable: false),
+        new OA\Property(property: 'gameScoreTotal', description: 'The global score of the game', type: 'string',
+            nullable: false),
+        new OA\Property(property: 'gameScoreFirst', description: 'The score of the first subgame', type: 'string',
+            nullable: false),
+        new OA\Property(property: 'gameScoreSecond', description: 'The score of the second subgame', type: 'string',
+            nullable: false),
     ]
 )]
 class GameResource extends JsonResource

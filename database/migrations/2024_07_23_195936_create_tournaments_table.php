@@ -21,8 +21,6 @@ return new class extends Migration
             $table->foreignIdFor(Team::class, 'gold_team_id')->nullable();
             $table->foreignIdFor(Team::class, 'silver_team_id')->nullable();
             $table->foreignIdFor(Team::class, 'bronze_team_id')->nullable();
-            $table->date('starts_at');
-            $table->date('ends_at')->nullable();
             $table->timestamps();
         });
     }

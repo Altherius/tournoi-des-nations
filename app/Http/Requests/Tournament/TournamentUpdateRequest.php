@@ -16,9 +16,9 @@ use OpenApi\Attributes as OA;
     required: ['name', 'startsAt'],
     properties: [
         new OA\Property(property: 'name', description: 'The name of the tournament', type: 'string', nullable: false),
+        new OA\Property(property: 'major', description: 'Is the tournament a major tournament', type: 'boolean', default: true, nullable: false),
+        new OA\Property(property: 'balancing', description: 'Is the tournament a balancing tournament', type: 'boolean', default: false, nullable: false),
         new OA\Property(property: 'elo_multiplier', description: 'The elo multiplier of the tournament', type: 'float', minimum: 0, nullable: false),
-        new OA\Property(property: 'startsAt', description: 'The starting date of the tournament', type: 'string', format: 'date', nullable: false),
-        new OA\Property(property: 'endsAt', description: 'The ending date of the tournament', type: 'string', format: 'date', nullable: true),
         new OA\Property(property: 'goldTeamId', description: 'The ID of the winning team of the tournament', type: 'integer', nullable: true),
         new OA\Property(property: 'silverTeamId', description: 'The ID of the second team of the tournament', type: 'integer', nullable: true),
         new OA\Property(property: 'bronzeTeamId', description: 'The ID of the third team of the tournament', type: 'integer', nullable: true),
@@ -50,8 +50,9 @@ class TournamentUpdateRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'startsAt' => 'required|date',
-            'endsAt' => 'date',
+            'eloMultiplier' => 'required|min:0',
+            'major' => 'required|boolean',
+            'balancing' => 'required|boolean',
             'goldTeamId' => 'exists:teams,id',
             'silverTeamId' => 'exists:teams,id',
             'bronzeTeamId' => 'exists:teams,id',

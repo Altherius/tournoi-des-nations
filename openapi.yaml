@@ -108,6 +108,19 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
+  /api/games/recent:
+    get:
+      tags:
+        - Game
+      summary: 'Get the 4 most recent games'
+      operationId: 95105a6973d24ca809cc7ce8886dd19e
+      responses:
+        '200':
+          description: 'A paginated collection of games'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GamePaginatedCollection'
   '/api/games/{id}':
     get:
       tags:
@@ -516,6 +529,13 @@ components:
         region:
           description: 'The region of the team'
           type: string
+          enum:
+            - africa
+            - asia
+            - europe
+            - north_america
+            - oceania
+            - south_america
           nullable: false
       type: object
     TeamUpdateInput:
@@ -541,22 +561,28 @@ components:
       required:
         - name
         - eloMultiplier
-        - startsAt
+        - balancing
+        - major
       properties:
         name:
           description: 'The name of the tournament'
           type: string
           nullable: false
-        elo_multiplier:
+        major:
+          description: 'Is the tournament a major tournament'
+          type: boolean
+          default: true
+          nullable: false
+        balancing:
+          description: 'Is the tournament a balancing tournament'
+          type: boolean
+          default: false
+          nullable: false
+        eloMultiplier:
           description: 'The elo multiplier of the tournament'
           type: number
           format: float
           minimum: 0
-          nullable: false
-        startsAt:
-          description: 'The starting date of the tournament'
-          type: string
-          format: date
           nullable: false
       type: object
     TournamentUpdateInput:
@@ -568,22 +594,22 @@ components:
           description: 'The name of the tournament'
           type: string
           nullable: false
+        major:
+          description: 'Is the tournament a major tournament'
+          type: boolean
+          default: true
+          nullable: false
+        balancing:
+          description: 'Is the tournament a balancing tournament'
+          type: boolean
+          default: false
+          nullable: false
         elo_multiplier:
           description: 'The elo multiplier of the tournament'
           type: number
           format: float
           minimum: 0
           nullable: false
-        startsAt:
-          description: 'The starting date of the tournament'
-          type: string
-          format: date
-          nullable: false
-        endsAt:
-          description: 'The ending date of the tournament'
-          type: string
-          format: date
-          nullable: true
         goldTeamId:
           description: 'The ID of the winning team of the tournament'
           type: integer
@@ -683,6 +709,13 @@ components:
         region:
           description: 'The region of the team'
           type: string
+          enum:
+            - africa
+            - asia
+            - europe
+            - north_america
+            - oceania
+            - south_america
           nullable: false
         rating:
           description: 'The rating of the team'
@@ -734,9 +767,8 @@ components:
         - id
         - name
         - eloMultiplier
-        - countryCode
-        - region
-        - rating
+        - major
+        - balancing
       properties:
         id:
           description: 'The ID of the tournament'
@@ -751,6 +783,17 @@ components:
           type: number
           format: float
           minimum: 0
+          nullable: false
+        major:
+          description: 'Is the tournament a major tournament ?'
+          type: boolean
+          default: true
+          example: true
+          nullable: false
+        balancing:
+          description: 'Is the tournament a balancing tournament'
+          type: boolean
+          default: false
           nullable: false
         goldTeamId:
           oneOf:
@@ -770,16 +813,6 @@ components:
               $ref: '#/components/schemas/Team'
           nullable: true
           description: 'The third team of the tournament'
-        startsAt:
-          description: 'The starting date of the tournament'
-          type: string
-          format: date
-          nullable: false
-        endsAt:
-          description: 'The ending date of the tournament'
-          type: string
-          format: date
-          nullable: true
       type: object
     Error:
       required:

@@ -32,7 +32,6 @@ class TournamentController extends Controller
         $tournament = new Tournament;
 
         $tournament->name = $request->name;
-        $tournament->starts_at = $request->startsAt;
         $tournament->major = $request->major;
         $tournament->balancing = $request->balancing;
         $tournament->elo_multiplier = $request->eloMultiplier;
@@ -82,8 +81,6 @@ class TournamentController extends Controller
         $tournament->gold_team_id = $request->goldTeamId;
         $tournament->silver_team_id = $request->silverTeamId;
         $tournament->bronze_team_id = $request->bronzeTeamId;
-        $tournament->starts_at = $request->startsAt;
-        $tournament->ends_at = $request->endsAt;
 
         $tournament->save();
 

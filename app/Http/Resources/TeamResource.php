@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Enum\Region;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use LogicException;
@@ -16,7 +17,8 @@ use OpenApi\Attributes\Property;
         new OA\Property(property: 'id', description: 'The ID of the team', type: 'integer', nullable: false),
         new OA\Property(property: 'name', description: 'The name of the team', type: 'string', nullable: false),
         new OA\Property(property: 'countryCode', description: 'The country code of the team', type: 'string', nullable: false),
-        new OA\Property(property: 'region', description: 'The region of the team', type: 'string', nullable: false),
+        new OA\Property(property: 'region', description: 'The region of the team', type: 'string', enum: Region::values,
+            nullable: false),
         new OA\Property(property: 'rating', description: 'The rating of the team', type: 'integer', nullable: false),
         new OA\Property(property: 'gamesCount', description: 'The total number of games of the team', type: 'integer', nullable: false),
         new OA\Property(property: 'winsCount', description: 'The total number of games won by the team', type: 'integer', nullable: false),

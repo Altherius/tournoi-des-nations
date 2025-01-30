@@ -22,7 +22,6 @@ class TournamentFactory extends Factory
             'gold_team_id' => Team::factory(),
             'silver_team_id' => Team::factory(),
             'bronze_team_id' => Team::factory(),
-            'starts_at' => fake()->dateTimeThisCentury(),
         ];
     }
 }

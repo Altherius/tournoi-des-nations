@@ -19,7 +19,8 @@ use OpenApi\Attributes as OA;
     properties: [
         new OA\Property(property: 'name', description: 'The name of the team', type: 'string', nullable: false),
         new OA\Property(property: 'countryCode', description: 'The country code of the team', type: 'string', nullable: false),
-        new OA\Property(property: 'region', description: 'The region of the team', type: 'string', nullable: false),
+        new OA\Property(property: 'region', description: 'The region of the team', type: 'string', enum: Region::values,
+            nullable: false),
     ]
 )]
 #[OA\RequestBody(
