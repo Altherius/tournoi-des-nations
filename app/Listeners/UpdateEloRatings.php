@@ -33,10 +33,12 @@ class UpdateEloRatings
 
         $hostingTeamEloHistoryEntry = new EloHistoryEntry;
         $hostingTeamEloHistoryEntry->team_id = $event->game->hostingTeam->id;
+        $hostingTeamEloHistoryEntry->opposing_team_id = $event->game->receivingTeam->id;
         $hostingTeamEloHistoryEntry->rating = $event->game->hostingTeam->rating;
 
         $receivingTeamEloHistoryEntry = new EloHistoryEntry;
         $receivingTeamEloHistoryEntry->team_id = $event->game->receivingTeam->id;
+        $receivingTeamEloHistoryEntry->opposing_team_id = $event->game->hostingTeam->id;
         $receivingTeamEloHistoryEntry->rating = $event->game->receivingTeam->rating;
 
         $hostingTeamEloHistoryEntry->save();

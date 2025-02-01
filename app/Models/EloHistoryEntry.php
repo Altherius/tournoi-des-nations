@@ -10,7 +10,12 @@ class EloHistoryEntry extends Model
 {
     public function team(): BelongsTo
     {
-        return $this->belongsTo(Team::class, 'hosting_team_id');
+        return $this->belongsTo(Team::class, 'team_id');
+    }
+
+    public function opposing_team(): BelongsTo
+    {
+        return $this->belongsTo(Team::class, 'opposing_team_id');
     }
 
     use HasFactory;

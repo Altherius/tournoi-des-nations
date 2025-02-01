@@ -14,7 +14,8 @@ return new class extends Migration
     {
         Schema::create('elo_history_entries', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Team::class);
+            $table->foreignIdFor(Team::class)->constrained();
+            $table->foreignId('opposing_team_id')->references('id')->on('teams');
             $table->integer('rating');
             $table->timestamps();
         });

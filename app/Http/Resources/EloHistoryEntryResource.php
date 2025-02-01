@@ -28,6 +28,7 @@ class EloHistoryEntryResource extends JsonResource
             'id' => $this->id,
             'rating' => $this->rating,
             'date' => $this->created_at,
+            'opposingTeam' => new TeamResource($this->opposing_team),
         ];
     }
 }

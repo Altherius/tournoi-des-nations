@@ -10,11 +10,11 @@ use OpenApi\Attributes as OA;
 class EloHistoryEntryController extends Controller
 {
     #[OA\Get(path: '/api/teams/{team}/elo-history', summary: 'Get the paginated Elo History of a Team', tags: ['Team'])]
-    #[OA\Parameter(name: 'page', in: 'query', description: 'The page number', schema: new OA\Schema(type: 'integer'))]
-    #[OA\Parameter(name: 'team', in: 'path', description: 'The team ID', schema: new OA\Schema(type: 'integer'), required: true)]
+    #[OA\Parameter(name: 'page', description: 'The page number', in: 'query', schema: new OA\Schema(type: 'integer'))]
+    #[OA\Parameter(name: 'team', description: 'The team ID', in: 'path', required: true, schema: new OA\Schema(type: 'integer'))]
     #[OA\Response(response: '200', description: 'The paginated Elo History of the team', content: new OA\JsonContent(ref: '#/components/schemas/EloHistoryEntryPaginatedCollection'))]
     public function team(Team $team)
     {
-        return EloHistoryEntryResource::collection(EloHistoryEntry::where('team_id', $team->id)->orderBy('id', 'desc')->paginate());
+        return EloHistoryEntryResource::collection(EloHistoryEntry::with(['opposing_team'])->where('team_id', $team->id)->orderBy('id', 'desc')->paginate());
     }
 }
