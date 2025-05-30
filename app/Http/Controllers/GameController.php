@@ -14,7 +14,7 @@ class GameController extends Controller
     #[OA\Response(response: '200', description: 'A paginated collection of games', content: new OA\JsonContent(ref: '#/components/schemas/GamePaginatedCollection'))]
     public function index()
     {
-        return GameResource::collection(Game::with(['hostingTeam', 'receivingTeam'])->paginate());
+        return GameResource::collection(Game::with(['hostingTeam', 'receivingTeam'])->paginate(500));
     }
 
     #[OA\Get(path: '/api/games/recent', summary: 'Get the 4 most recent games', tags: ['Game'])]

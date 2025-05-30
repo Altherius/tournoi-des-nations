@@ -15,6 +15,6 @@ class EloHistoryEntryController extends Controller
     #[OA\Response(response: '200', description: 'The paginated Elo History of the team', content: new OA\JsonContent(ref: '#/components/schemas/EloHistoryEntryPaginatedCollection'))]
     public function team(Team $team)
     {
-        return EloHistoryEntryResource::collection(EloHistoryEntry::with(['opposing_team'])->where('team_id', $team->id)->orderBy('id', 'desc')->paginate());
+        return EloHistoryEntryResource::collection(EloHistoryEntry::with(['opposing_team'])->where('team_id', $team->id)->orderBy('id', 'desc')->paginate(500));
     }
 }

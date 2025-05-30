@@ -17,7 +17,7 @@ class TeamController extends Controller
     #[OA\Response(response: '200', description: 'A paginated collection of teams', content: new OA\JsonContent(ref: '#/components/schemas/TeamPaginatedCollection'))]
     public function index()
     {
-        return TeamResource::collection(Team::with('gamesHosting')->with('gamesReceiving')->paginate());
+        return TeamResource::collection(Team::with('gamesHosting')->with('gamesReceiving')->paginate(500));
     }
 
     #[OA\Post(path: '/api/teams', summary: 'Create team', tags: ['Team'])]
