@@ -8,6 +8,7 @@ use App\Http\Resources\GameResource;
 use App\Http\Resources\TeamResource;
 use App\Models\Game;
 use App\Models\Team;
+use Illuminate\Http\Request;
 use OpenApi\Attributes as OA;
 
 class TeamController extends Controller
@@ -15,9 +16,15 @@ class TeamController extends Controller
     #[OA\Get(path: '/api/teams', summary: 'Get collection of teams', tags: ['Team'])]
     #[OA\Parameter(name: 'page', in: 'query', description: 'The page number', schema: new OA\Schema(type: 'integer'))]
     #[OA\Response(response: '200', description: 'A paginated collection of teams', content: new OA\JsonContent(ref: '#/components/schemas/TeamPaginatedCollection'))]
-    public function index()
+    public function index(Request $request)
     {
-        return TeamResource::collection(Team::with('gamesHosting')->with('gamesReceiving')->paginate(500));
+        return TeamResource::collection(
+            Team::with('gamesHosting')
+                ->with('gamesReceiving')
+                ->filter()
+                ->sort()
+                ->paginate(500))
+        ;
     }
 
     #[OA\Post(path: '/api/teams', summary: 'Create team', tags: ['Team'])]
