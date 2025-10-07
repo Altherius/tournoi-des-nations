@@ -66,7 +66,11 @@ class TeamController extends Controller
     #[OA\Response(response: '404', description: 'No team has been found with this ID', content: new OA\JsonContent(ref: '#/components/schemas/Error'))]
     public function games(Team $team)
     {
-        $games = Game::where('hosting_team_id', $team->id)->orWhere('receiving_team_id', $team->id)->paginate();
+        $games = Game::where('hosting_team_id', $team->id)
+            ->orWhere('receiving_team_id', $team->id)
+            ->filter()
+            ->sort()
+            ->paginate(20);
 
         return GameResource::collection($games);
     }

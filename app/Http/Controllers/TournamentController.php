@@ -17,7 +17,10 @@ class TournamentController extends Controller
     #[OA\Response(response: '200', description: 'A paginated collection of tournaments', content: new OA\JsonContent(ref: '#/components/schemas/TournamentPaginatedCollection'))]
     public function index()
     {
-        return TournamentResource::collection(Tournament::with(['goldTeam', 'silverTeam', 'bronzeTeam'])->paginate(500));
+        return TournamentResource::collection(Tournament::with(['goldTeam', 'silverTeam', 'bronzeTeam'])
+            ->filter()
+            ->sort()
+            ->paginate(500));
     }
 
     #[OA\Post(path: '/api/tournaments', summary: 'Create tournament', tags: ['Tournament'])]
@@ -62,7 +65,10 @@ class TournamentController extends Controller
     #[OA\Response(response: '404', description: 'No tournament has been found with this ID', content: new OA\JsonContent(ref: '#/components/schemas/Error'))]
     public function games(Tournament $tournament)
     {
-        $games = Game::where('tournament_id', $tournament->id)->paginate(500);
+        $games = Game::where('tournament_id', $tournament->id)
+            ->filter()
+            ->sort()
+            ->paginate(500);
 
         return GameResource::collection($games);
     }
