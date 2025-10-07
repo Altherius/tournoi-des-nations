@@ -17,7 +17,7 @@ class TournamentController extends Controller
     #[OA\Response(response: '200', description: 'A paginated collection of tournaments', content: new OA\JsonContent(ref: '#/components/schemas/TournamentPaginatedCollection'))]
     public function index()
     {
-        return TournamentResource::collection(Tournament::with(['goldTeam', 'silverTeam', 'bronzeTeam'])->paginate());
+        return TournamentResource::collection(Tournament::with(['goldTeam', 'silverTeam', 'bronzeTeam'])->paginate(500));
     }
 
     #[OA\Post(path: '/api/tournaments', summary: 'Create tournament', tags: ['Tournament'])]
