@@ -62,7 +62,7 @@ class TournamentController extends Controller
     #[OA\Response(response: '404', description: 'No tournament has been found with this ID', content: new OA\JsonContent(ref: '#/components/schemas/Error'))]
     public function games(Tournament $tournament)
     {
-        $games = Game::where('tournament_id', $tournament->id)->paginate(50);
+        $games = Game::where('tournament_id', $tournament->id)->paginate(500);
 
         return GameResource::collection($games);
     }
